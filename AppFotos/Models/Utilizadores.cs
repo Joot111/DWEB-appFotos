@@ -42,5 +42,27 @@ namespace AppFotos.Models
         /// Número de Telemóvel
         /// </summary>
         public string Telemovel { get; set; }
+
+        /*******************************
+         * Definição dos Relacionamentos
+         *******************************
+         */
+
+        // Relacionamentos M - N
+
+        /// <summary>
+        /// Lista das fotografias que são propriedade do utilizador
+        /// </summary>
+        public ICollection<Fotografias> ListaFotografias { get; set; }
+
+        /// <summary>
+        /// Lista dos 'gostos' de fotografias do utilizador
+        /// </summary>
+        public ICollection<Gostos> ListaGostos { get; set; }
+
+        /// <summary>
+        /// Lista das fotografias compradas pelo utilizador
+        /// </summary>
+        public ICollection<Compras> ListaCompras { get; set; }
     }
 }

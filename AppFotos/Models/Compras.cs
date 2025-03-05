@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppFotos.Models
 {
@@ -10,6 +11,7 @@ namespace AppFotos.Models
         /// <summary>
         /// Identificador da compra
         /// </summary>
+        [Key] // PK, int, autonumber
         public int Id { get; set; }
 
         /// <summary>
@@ -23,6 +25,30 @@ namespace AppFotos.Models
         /// que representa a evolução da 'compra' 
         /// </summary>
         public Estados Estado { get; set; }
+
+        /*******************************
+         * Definição dos Relacionamentos
+         *******************************
+         */
+
+        // Relacionamentos 1 - N
+
+        /// <summary>
+        /// FK para referenciar o Comprador da fotografia
+        /// </summary>
+        [ForeignKey(nameof(Comprador))]
+        public int CompradorFK { get; set; }
+
+        /// <summary>
+        /// FK para referenciar o Comprador da fotografia
+        /// </summary>
+        public Utilizadores Comprador { get; set; }
+
+        /// <summary>
+        /// FK para referenciar as fotografias compradas
+        /// </summary>
+        public ICollection<Fotografias> ListaFotografiasCompradas { get; set; }
+
     }
 
     // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum

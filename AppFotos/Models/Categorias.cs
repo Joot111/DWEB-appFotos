@@ -17,6 +17,19 @@ namespace AppFotos.Models
         /// Nome da categoria associada à fotografia 
         /// </summary>
         public string Nome { get; set; }
-        
+
+
+        /*******************************
+         * Definição dos Relacionamentos
+         *******************************
+         */
+
+        // Relacionamentos 1 - N
+
+        /// <summary>
+        /// Lista das fotografias associadas a uma categoria
+        /// </summary>
+        public ICollection<Fotografias> ListaFotografias { get; set; }
+
     }
 }
