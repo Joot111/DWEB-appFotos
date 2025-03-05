@@ -8,7 +8,7 @@ namespace AppFotos.Models
     /// pelas fotografias existentes
     /// </summary>
     
-    // Chave Primária que referência as chaves forasteiras
+    // Chave Primária Composta que referência as chaves forasteiras
     [PrimaryKey(nameof(UtilizadorFK), nameof(FotografiaFK))] 
     public class Gostos
     {
