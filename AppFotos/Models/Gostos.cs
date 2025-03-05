@@ -7,6 +7,8 @@ namespace AppFotos.Models
     /// regista os 'gostos' que um utilizador da app tem
     /// pelas fotografias existentes
     /// </summary>
+    
+    // Chave Primária que referência as chaves forasteiras
     [PrimaryKey(nameof(UtilizadorFK), nameof(FotografiaFK))] 
     public class Gostos
     {
