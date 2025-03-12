@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace AppFotos.Data
 {
     /// <summary>
-    /// Esta classe representa a Base de Dados associada ao próprio
-    /// Se houve mais base de dados, irão haver tatas classes 
+    /// Esta classe representa a Base de Dados associada ao projeto
+    /// Se houve mais base de dados, irão haver tantas classes 
     /// deste tipo, quantas as necessárias
     /// 
     /// Esta classe é equivalente a: CREATE SCHEMA / CREATE DATABASE no SQL
