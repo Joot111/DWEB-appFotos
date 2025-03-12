@@ -12,6 +12,9 @@ namespace AppFotos.Controllers
 {
     public class CategoriasController : Controller
     {
+        /// <summary>
+        /// referencia a Base de Dados
+        /// </summary>
         private readonly ApplicationDbContext _context;
 
         public CategoriasController(ApplicationDbContext context)
@@ -46,23 +49,38 @@ namespace AppFotos.Controllers
         // GET: Categorias/Create
         public IActionResult Create()
         {
+            // mostra a View de nome 'Create',
+            // que está na pasta 'Categorias'
             return View();
         }
 
         // POST: Categorias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome")] Categorias categorias)
+        [HttpPost] // Responde a uma resposta do browser feita em POST
+        [ValidateAntiForgeryToken] // Proteção contra ataques
+        public async Task<IActionResult> Create([Bind("Nome")] Categorias novaCategoria)
         {
+            // Tarefas
+            // - ajustar o nome das variáveis
+            // - ajustar os anotadores, neste caso em concreto,
+            //   eliminar o ID do 'Bind'
+            
             if (ModelState.IsValid)
             {
-                _context.Add(categorias);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Add(novaCategoria);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Aconteceu um erro na gravação de dados.");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(categorias);
+            return View(novaCategoria);
         }
 
         // GET: Categorias/Edit/5
@@ -86,9 +104,9 @@ namespace AppFotos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Categorias categorias)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Categorias categoriaAlterada)
         {
-            if (id != categorias.Id)
+            if (id != categoriaAlterada.Id)
             {
                 return NotFound();
             }
@@ -97,12 +115,12 @@ namespace AppFotos.Controllers
             {
                 try
                 {
-                    _context.Update(categorias);
+                    _context.Update(categoriaAlterada);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriasExists(categorias.Id))
+                    if (!CategoriasExists(categoriaAlterada.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +131,7 @@ namespace AppFotos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(categorias);
+            return View(categoriaAlterada);
         }
 
         // GET: Categorias/Delete/5

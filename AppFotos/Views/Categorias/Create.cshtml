@@ -1,12 +1,12 @@
 ﻿@model AppFotos.Models.Categorias
 
+@* Esta view está a manipular um único objeto do tipo Categoria*@
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Categoria";
 }
 
-<h1>Create</h1>
+<h1>Adicionar Categorias</h1>
 
-<h4>Categorias</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,15 +17,16 @@
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
+            &nbsp;<br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regressar</a>
 </div>
 
 @section Scripts {
