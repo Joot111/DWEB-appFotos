@@ -4,6 +4,7 @@ using AppFotos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppFotos.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312094727_modelo")]
+    partial class modelo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias", (string)null);
+                    b.ToTable("Categorias");
                 });
 
             modelBuilder.Entity("AppFotos.Models.Compras", b =>
@@ -60,7 +63,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasIndex("CompradorFK");
 
-                    b.ToTable("Compras", (string)null);
+                    b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("AppFotos.Models.Fotografias", b =>
@@ -101,7 +104,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasIndex("DonoFK");
 
-                    b.ToTable("Fotografias", (string)null);
+                    b.ToTable("Fotografias");
                 });
 
             modelBuilder.Entity("AppFotos.Models.Gostos", b =>
@@ -119,7 +122,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasIndex("FotografiaFK");
 
-                    b.ToTable("Gostos", (string)null);
+                    b.ToTable("Gostos");
                 });
 
             modelBuilder.Entity("AppFotos.Models.Utilizadores", b =>
@@ -156,7 +159,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Utilizadores", (string)null);
+                    b.ToTable("Utilizadores");
                 });
 
             modelBuilder.Entity("ComprasFotografias", b =>
@@ -171,7 +174,7 @@ namespace AppFotos.Data.Migrations
 
                     b.HasIndex("ListaFotografiasCompradasId");
 
-                    b.ToTable("ComprasFotografias", (string)null);
+                    b.ToTable("ComprasFotografias");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
