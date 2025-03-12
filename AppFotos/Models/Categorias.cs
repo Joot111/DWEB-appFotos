@@ -10,12 +10,15 @@ namespace AppFotos.Models
         /// <summary>
         /// Identificador da Categoria
         /// </summary>
-        [Key]
+        [Key] // anotação -> restrição
         public int Id { get; set; }
-        
+
         /// <summary>
         /// Nome da categoria associada à fotografia 
         /// </summary>
+        [Required(ErrorMessage = "O {0} da Categoria é de preenchimento obrigatório.")]
+        [StringLength(20)]
+        [Display(Name = "Categoria")]
         public string Nome { get; set; }
 
 
