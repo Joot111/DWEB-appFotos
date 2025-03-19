@@ -19,7 +19,6 @@ namespace AppFotos.Models
         [Display(Name = "Nome")]
         [StringLength(50)]
         [Required(ErrorMessage = "O {0} não pode ser nulo.")]
-        []
         public string Nome { get; set; }
 
         /// <summary>
