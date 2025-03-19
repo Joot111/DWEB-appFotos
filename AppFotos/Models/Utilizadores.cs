@@ -16,31 +16,50 @@ namespace AppFotos.Models
         /// <summary>
         /// Nome do Utilizador
         /// </summary>
+        [Display(Name = "Nome")]
+        [StringLength(50)]
+        [Required(ErrorMessage = "O {0} não pode ser nulo.")]
         public string Nome { get; set; }
 
         /// <summary>
         /// Morada do Utilizador
         /// </summary>
+        [Display(Name = "Morada")]
+        [StringLength(50)]
         public string Morada { get; set; }
 
         /// <summary>
         /// Código Postal da morada do Utilizador
         /// </summary>
+        [Display(Name = "Código Postal")]
+        [StringLength(50)]
+        [RegularExpression("[1-9][0-9]{3}-[0-9]{3} [A-Za-z ]+",
+            ErrorMessage = "No {0} só são aceites algarismos e letras inglesas.")]
         public string CodPostal { get; set; }
 
         /// <summary>
         /// País da morada do Utilizador
         /// </summary>
+        [Display(Name = "País")]
+        [StringLength(50)]
         public string Pais { get; set; }
-        
+
         /// <summary>
         /// Número de Identificaçao Fiscal do Utilizador 
         /// </summary>
+        [StringLength(9)]
+        [RegularExpression("[1-9][0-9]{8}", ErrorMessage = "Deve escrever apenas 9 digitos no {0}.")]
+        [Required(ErrorMessage = "O {0} não pode ser nulo.")]
         public string NIF { get; set; }
 
         /// <summary>
         /// Número de Telemóvel
         /// </summary>
+        [Display(Name = "Telemóvel")]
+        // Pensado como App nacional, se for Internacional é necessário muito mais
+        [StringLength(18)]
+        [RegularExpression("(([+]|00)[0-9]{1,5})?[1-9][0-9]{5,10}", 
+            ErrorMessage = "Escreva um nº de telefone. Pode adicionar o indicativo do país.")] // '-' '_'
         public string Telemovel { get; set; }
 
         /*******************************
