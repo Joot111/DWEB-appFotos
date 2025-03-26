@@ -62,8 +62,17 @@ namespace AppFotos.Controllers
         // GET: Fotografias/Create
         public IActionResult Create()
         {
-            ViewData["CategoriaFK"] = new SelectList(_context.Categorias, "Id", "Nome");
-            ViewData["DonoFK"] = new SelectList(_context.Utilizadores, "Id", "NIF");
+            // este é o primeiro método a ser chamado quando se pretende adicionar uma Fotografia
+
+            // estes contentores servem para levar os dados das 'dropdows' para as views
+            // SELECT *
+            // FROM Categorias c
+            // ORDER BY c.Nome
+            ViewData["CategoriaFK"] = new SelectList(_context.Categorias.OrderBy(c=>c.Nome), "Id", "Nome");
+            // SELECT *
+            // FROM Utilizadores u
+            // ORDER BY u.Nome
+            ViewData["DonoFK"] = new SelectList(_context.Utilizadores.OrderBy(u=>u.Nome), "Id", "Nome");
             return View();
         }
 
@@ -72,16 +81,39 @@ namespace AppFotos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descricao,Ficheiro,Data,Preco,CategoriaFK,DonoFK")] Fotografias fotografia)
+        public async Task<IActionResult> Create([Bind("Titulo,Descricao,Ficheiro,Data,Preco,CategoriaFK,DonoFK")] Fotografias fotografia)
         {
-            if (ModelState.IsValid)
+            // vars.auxiliares
+            bool haErro = false;
+
+            // Avaliar se há Categoria e Utilizador
+            if(fotografia.CategoriaFK<= 0)
+            {
+                // Erro. Não foi escolhida a Categoria
+                haErro = true;
+                // crio msg de erro
+                ModelState.AddModelError("", "Tem de escolher uma categoria");
+            }
+
+            if (fotografia.DonoFK <= 0)
+            {
+                // Erro. Não foi escolhido o Dono
+                haErro = true;
+                // crio msg de erro
+                ModelState.AddModelError("", "Tem de escolher uma categoria");
+            }
+
+            // Avalia se os dados estão de acordo com o Model
+            if (ModelState.IsValid && !haErro)
             {
                 _context.Add(fotografia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaFK"] = new SelectList(_context.Categorias, "Id", "Nome", fotografia.CategoriaFK);
-            ViewData["DonoFK"] = new SelectList(_context.Utilizadores, "Id", "NIF", fotografia.DonoFK);
+            ViewData["CategoriaFK"] = new SelectList(_context.Categorias.OrderBy(c=>c.Nome), "Id", "Nome", fotografia.CategoriaFK);
+            ViewData["DonoFK"] = new SelectList(_context.Utilizadores.OrderBy(u=>u.Nome), "Id", "Nome", fotografia.DonoFK);
+            
+            // Se chego aqui é pq correu mal...
             return View(fotografia);
         }
 
@@ -93,14 +125,14 @@ namespace AppFotos.Controllers
                 return NotFound();
             }
 
-            var fotografias = await _context.Fotografias.FindAsync(id);
-            if (fotografias == null)
+            var fotografia = await _context.Fotografias.FindAsync(id);
+            if (fotografia == null)
             {
                 return NotFound();
             }
-            ViewData["CategoriaFK"] = new SelectList(_context.Categorias, "Id", "Nome", fotografias.CategoriaFK);
-            ViewData["DonoFK"] = new SelectList(_context.Utilizadores, "Id", "NIF", fotografias.DonoFK);
-            return View(fotografias);
+            ViewData["CategoriaFK"] = new SelectList(_context.Categorias.OrderBy(c => c.Nome), "Id", "Nome", fotografia.CategoriaFK);
+            ViewData["DonoFK"] = new SelectList(_context.Utilizadores.OrderBy(u => u.Nome), "Id", "Nome", fotografia.DonoFK);
+            return View(fotografia);
         }
 
         // POST: Fotografias/Edit/5
@@ -135,8 +167,8 @@ namespace AppFotos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaFK"] = new SelectList(_context.Categorias, "Id", "Nome", fotografia.CategoriaFK);
-            ViewData["DonoFK"] = new SelectList(_context.Utilizadores, "Id", "NIF", fotografia.DonoFK);
+            ViewData["CategoriaFK"] = new SelectList(_context.Categorias.OrderBy(c => c.Nome), "Id", "Nome", fotografia.CategoriaFK);
+            ViewData["DonoFK"] = new SelectList(_context.Utilizadores.OrderBy(u => u.Nome), "Id", "Nome", fotografia.DonoFK);
             return View(fotografia);
         }
 
