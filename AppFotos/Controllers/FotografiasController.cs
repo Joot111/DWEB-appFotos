@@ -82,7 +82,8 @@ namespace AppFotos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Titulo,Descricao,Ficheiro,Data,PrecoAux,CategoriaFK,DonoFK")] Fotografias fotografia)
+        public async Task<IActionResult> Create([Bind("Titulo,Descricao,Ficheiro,Data,PrecoAux,CategoriaFK,DonoFK")] Fotografias fotografia,
+            IFormFile imagemFoto)
         {
             // vars.auxiliares
             bool haErro = false;
@@ -102,6 +103,30 @@ namespace AppFotos.Controllers
                 haErro = true;
                 // crio msg de erro
                 ModelState.AddModelError("", "Tem de escolher uma categoria");
+            }
+
+            /* Avaliar o ficheiro fornecido
+             * - há ficheiro?
+             *  - se não existir ficheiro, gerar msg erro e devolver à view o controlo
+             *  - se há,
+             *      - será uma imagem?
+             *          - se não for, gerar msg erro e devolver à view o controlo
+             *          - é,
+             *              - determinar o novo nome do ficheiro
+             *              - guardar na BD o nome do ficheiro
+             *              - guardaro ficheiro no disco rígido do servidor
+             */
+
+            if (imagemFoto == null)
+            {
+                // não há imagem
+                haErro = true;
+                // crio msg de erro
+                ModelState.AddModelError("", "Tem de submeter uma Fotografia");
+            }
+            else
+            {
+                // há ficheiro. Mas, é uma imagem?
             }
 
             // Avalia se os dados estão de acordo com o Model
