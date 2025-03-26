@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppFotos.Data;
 using AppFotos.Models;
+using System.Globalization;
 
 namespace AppFotos.Controllers
 {
@@ -81,7 +82,7 @@ namespace AppFotos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Titulo,Descricao,Ficheiro,Data,Preco,CategoriaFK,DonoFK")] Fotografias fotografia)
+        public async Task<IActionResult> Create([Bind("Titulo,Descricao,Ficheiro,Data,PrecoAux,CategoriaFK,DonoFK")] Fotografias fotografia)
         {
             // vars.auxiliares
             bool haErro = false;
@@ -106,6 +107,12 @@ namespace AppFotos.Controllers
             // Avalia se os dados estão de acordo com o Model
             if (ModelState.IsValid && !haErro)
             {
+                // transferir o valor do PrecoAux para o Preco
+                // há necessidade de tratar a questão do . no meio da string
+                // há necessidade de garantir que a conversão seja feita segunda uma 'cultura pt-pt'
+                fotografia.Preco = Convert.ToDecimal(fotografia.PrecoAux.Replace('.',','), new CultureInfo("pt-PT"));
+
+                // adicionar os dados da nova fotografia na BD
                 _context.Add(fotografia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
