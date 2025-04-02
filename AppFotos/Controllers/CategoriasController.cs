@@ -111,11 +111,32 @@ namespace AppFotos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Categorias categoriaAlterada)
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id,Nome")] Categorias categoriaAlterada)
         {
+            // A anotação FromRoute lê o valor do ID da rota
+            // se houver alterações à 'rota', alterações indevidas
             if (id != categoriaAlterada.Id)
             {
-                return NotFound();
+                return RedirectToAction("Index");
+            }
+
+            // será que os dados que recebi,
+            // são correspondentes ao objeto que enviei para o browser?
+            var categoriaID = HttpContext.Session.GetInt32("CategoriaID");
+            // demorei muito tempo => timeout
+            if (categoriaID == null)
+            {
+                ModelState.AddModelError("", "Demorou muito tempo. Tem de ser mais rápido.");
+                // guardar os dados do objeto que vai ser enviado para o browser pelo Utilizador
+                HttpContext.Session.SetInt32("CategoriaID", categoriaAlterada.Id);
+                return View(categoriaAlterada);
+            }
+
+            // Houve adulteração dos dados
+            if (categoriaID != categoriaAlterada.Id)
+            {
+                // O utilizador está a tentar alterar outro objeto diferente do que recebeu
+                return RedirectToAction("Index");
             }
 
             if (ModelState.IsValid)
