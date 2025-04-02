@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppFotos.Models
@@ -33,12 +34,28 @@ namespace AppFotos.Models
         /// <summary>
         /// Data em que a fotografia foi tirada
         /// </summary>
+        [Display(Name = "Data")]
+        [DataType(DataType.Date)] // tranforma o atributo, na BD, em 'Date'
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "A {0} é de preenchimento obrigatório.")]
         public DateTime Data { get; set; }
 
         /// <summary>
         /// Preço de venda da fotografia
         /// </summary>
         public decimal Preco { get; set; }
+
+        /// <summary>
+        /// Atributo auxiliar para recolher o valor do Preço da Fotografia
+        /// Será usado no 'Create' e no 'Edit
+        /// </summary>
+        [NotMapped]
+        [Display(Name = "Preço")]
+        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(10)]
+        [RegularExpression("[0-9]{1,7}([,.][0-9]{1,2})?", 
+            ErrorMessage = "Só são aceites algarismos. Pode escrever duas casas decimais, separadas por . ou ,")]
+        public string PrecoAux { get; set; }
 
         /*******************************
          * Definição dos Relacionamentos
@@ -51,6 +68,7 @@ namespace AppFotos.Models
         /// FK para referenciar a categoria da fotografia
         /// </summary>
         [ForeignKey(nameof(Categoria))]
+        [Display(Name = "Categoria")]
         public int CategoriaFK { get; set; }
 
         /// <summary>
@@ -62,6 +80,7 @@ namespace AppFotos.Models
         /// FK para referenciar o Dono da fotografia
         /// </summary>
         [ForeignKey(nameof(Dono))]
+        [Display(Name = "Dono")]
         public int DonoFK { get; set; }
 
         /// <summary>
