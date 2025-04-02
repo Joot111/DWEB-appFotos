@@ -6,13 +6,16 @@
 
 <h1>Edit</h1>
 
-<h4>Fotografias</h4>
+<h4>Editar as Fotografias</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* guarda a referência ao ID da fotografia*@
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Ficheiro" />
+            <input type="hidden" asp-for="Preco" />
             <div class="form-group">
                 <label asp-for="Titulo" class="control-label"></label>
                 <input asp-for="Titulo" class="form-control" />
@@ -20,12 +23,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+                <textarea asp-for="Descricao" class="form-control" ></textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Ficheiro" class="control-label"></label>
-                <input asp-for="Ficheiro" class="form-control" />
+                <input type="file"
+                       accept=".png,.jpeg,.jpg"
+                       name="imagemFoto"
+                       class="form-control" />
                 <span asp-validation-for="Ficheiro" class="text-danger"></span>
             </div>
             <div class="form-group">
