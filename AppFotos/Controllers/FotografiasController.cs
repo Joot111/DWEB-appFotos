@@ -13,11 +13,20 @@ namespace AppFotos.Controllers
 {
     public class FotografiasController : Controller
     {
+        /// <summary>
+        ///  referência à Base de Dados
+        /// </summary>
         private readonly ApplicationDbContext _context;
 
-        public FotografiasController(ApplicationDbContext context)
+        /// <summary>
+        /// objeto que contêm todas as caracterísiticas do servidor
+        /// </summary>
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public FotografiasController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Fotografias
@@ -87,6 +96,7 @@ namespace AppFotos.Controllers
         {
             // vars.auxiliares
             bool haErro = false;
+            string nomeImagem = "";
 
             // Avaliar se há Categoria e Utilizador
             if(fotografia.CategoriaFK<= 0)
@@ -127,6 +137,29 @@ namespace AppFotos.Controllers
             else
             {
                 // há ficheiro. Mas, é uma imagem?
+                if(imagemFoto.ContentType != "image/jpeg" && imagemFoto.ContentType != "image/png")
+                {
+                    // ! (A==b || A==c) <=> (A!=b && A!=c)
+                    // não há ficheiro
+                    haErro = true;
+                    // crio msg de erro
+                    ModelState.AddModelError("", "Tem de submeter uma Fotografia");
+                }
+                else
+                {
+                    // há imagem,
+                    // vamos processá-la
+                    //*********************
+                    // Novo nome para o ficheiro
+                    Guid g = Guid.NewGuid();
+                    nomeImagem = g.ToString(); 
+                    string extensao = Path.GetExtension(imagemFoto.FileName).ToLowerInvariant();
+                    nomeImagem += extensao;
+
+                    // guardar este nome na BD
+                    fotografia.Ficheiro = nomeImagem;
+
+                }
             }
 
             // Avalia se os dados estão de acordo com o Model
@@ -140,6 +173,26 @@ namespace AppFotos.Controllers
                 // adicionar os dados da nova fotografia na BD
                 _context.Add(fotografia);
                 await _context.SaveChangesAsync();
+
+                // *********************************************
+                // guardar o ficheiro no disco rígido
+                // *********************************************
+                // determinar o local de armazenagem da imagem
+                string localizacaoImagem = _webHostEnvironment.WebRootPath;
+                localizacaoImagem = Path.Combine(localizacaoImagem,"imagens");
+                if (!Directory.Exists(localizacaoImagem))
+                {
+                    Directory.CreateDirectory(localizacaoImagem);
+                }
+                // gerar o caminho completo para a imagem
+                nomeImagem = Path.Combine(localizacaoImagem, nomeImagem);
+                // agora, temos as condições para guardar a imagem no ficheiro
+                using var stream = new FileStream(
+                    nomeImagem, FileMode.Create
+                    );
+                await imagemFoto.CopyToAsync( stream );
+
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoriaFK"] = new SelectList(_context.Categorias.OrderBy(c=>c.Nome), "Id", "Nome", fotografia.CategoriaFK);
