@@ -34,7 +34,7 @@ namespace AppFotos.Models
         /// <summary>
         /// FK para referenciar o Utilizador que gosta da fotografia
         /// </summary>
-        public Utilizadores Utilizador { get; set; }
+        public Utilizadores Utilizador { get; set; } = null!;
 
         /// <summary>
         /// FK para referenciar a fotografia que o utilizador gosto
@@ -45,6 +45,6 @@ namespace AppFotos.Models
         /// <summary>
         /// FK para referenciar a fotografia que o utilizador gosto
         /// </summary>
-        public Fotografias Fotografia { get; set; }
+        public Fotografias Fotografia { get; set; } = null!;
     }
 }
