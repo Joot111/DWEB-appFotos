@@ -42,12 +42,13 @@ namespace AppFotos.Models
         /// <summary>
         /// FK para referenciar o Comprador da fotografia
         /// </summary>
-        public Utilizadores Comprador { get; set; }
+        // Anotação -> []
+        public Utilizadores Comprador { get; set; } = null!;
 
         /// <summary>
         /// FK para referenciar as fotografias compradas
         /// </summary>
-        public ICollection<Fotografias> ListaFotografiasCompradas { get; set; }
+        public ICollection<Fotografias> ListaFotografiasCompradas { get; set; } = [];
 
     }
 
