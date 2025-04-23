@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using AppFotos.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,8 +47,8 @@ namespace AppFotos.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     Este objeto será usado para fazer a transposição de dados entre
+        ///     este ficheiro (de programação) e a sua respetiva visualização    
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
@@ -65,38 +66,39 @@ namespace AppFotos.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            ///     Email do novo utilizador
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
+            [EmailAddress(ErrorMessage = "Tem de escrever um {0} válido")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            ///     Password do novo utilizador
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
+            [StringLength(20, ErrorMessage = "A {0} tem de ter pelo menos, {2} e máximo de {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            ///     Confirmação da Password
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar Password")]
+            [Compare(nameof(Password), ErrorMessage = "A password e a sua confirmação não coincidem.")]
             public string ConfirmPassword { get; set; }
+
+            /// <summary>
+            /// Incorporação dos dados de um utilizador
+            /// </summary>
+            public Utilizadores Utilizador {  get; set; }
         }
 
 
