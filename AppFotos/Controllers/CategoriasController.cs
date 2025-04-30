@@ -29,7 +29,7 @@ namespace AppFotos.Controllers
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categorias.ToListAsync());
+            return View(await _context.Categorias.Include(c => c.ListaFotografias).ToListAsync());
         }
 
         // GET: Categorias/Details/5
@@ -176,6 +176,7 @@ namespace AppFotos.Controllers
             }
 
             var categoria = await _context.Categorias
+                .Include(c => c.ListaFotografias)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (categoria == null)
             {
@@ -193,7 +194,9 @@ namespace AppFotos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
+            var categoria = await _context.Categorias.Include(c => c.ListaFotografias)
+                                                     .Where(c => c.Id == id)
+                                                     .FirstOrDefaultAsync();
 
             // será que os dados que recebi,
             // são correspondentes ao objeto que enviei para o browser?
@@ -214,8 +217,10 @@ namespace AppFotos.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (categoria != null)
+            if (categoria != null && categoria.ListaFotografias.Count == 0)
             {
+                // a Categoria só é apagada se existir -_-
+                // e senão tiver fotografia  associadas a ela
                 _context.Categorias.Remove(categoria);
             }
 
