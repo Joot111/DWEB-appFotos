@@ -56,12 +56,13 @@
                     <option value ="0">Escolha uma categoria, por favor</option>
                 </select>
             </div>
-            <div class="form-group">
+            @*Este bloco deixa de ser necessário sendo que já não estamos a selecionar o utilizador associado à fotografia manualmente
+                <div class="form-group">
                 <label asp-for="DonoFK" class="control-label"></label>
                 <select asp-for="DonoFK" class ="form-control" asp-items="ViewBag.DonoFK">
                     <option value ="0">Escolha um utilizador, por favor</option>
                 </select>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

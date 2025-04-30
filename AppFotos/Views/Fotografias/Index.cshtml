@@ -46,7 +46,11 @@
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ficheiro)
+                @*@Html.DisplayFor(modelItem => item.Ficheiro)*@
+                <img src="~/imagens/@item.Ficheiro"
+                     alt="imagem da fotografia com o título '@item.Titulo', fotografada por @item.Dono.Nome."
+                     title="@item.Titulo"
+                     height="100px"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data)
@@ -61,9 +65,12 @@
                 @Html.DisplayFor(modelItem => item.Dono.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if(User.Identity.IsAuthenticated){}
+                <text>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </text>
             </td>
         </tr>
 }
